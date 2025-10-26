@@ -1,19 +1,19 @@
 pipeline {
-    agent any
+    agent {
+        docker { image 'python:3.12' }
+    }
 
     stages {
-        stage('Checkout SCM') {
+        stage('Checkout') {
             steps {
-                echo 'Checking out code...'
                 checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Setting up Python environment...'
                 sh '''
-                python3 -m venv venv
+                python -m venv venv
                 . venv/bin/activate
                 pip install --upgrade pip
                 pip install -r requirements.txt
@@ -23,7 +23,6 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Running tests...'
                 sh '''
                 . venv/bin/activate
                 pytest -v

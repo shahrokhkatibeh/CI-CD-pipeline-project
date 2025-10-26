@@ -11,16 +11,19 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Setting up Python environment...'
-                sh 'python3 -m venv venv'
-                sh './venv/bin/pip install -r requirements.txt'
+                echo 'Setting up Python virtual environment...'
+                // ایجاد virtual environment
+                bat 'python -m venv venv'
+                // نصب dependencies
+                bat '.\\venv\\Scripts\\pip install --upgrade pip'
+                bat '.\\venv\\Scripts\\pip install -r requirements.txt'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                sh './venv/bin/python -m unittest discover'
+                bat '.\\venv\\Scripts\\python -m unittest discover'
             }
         }
 
